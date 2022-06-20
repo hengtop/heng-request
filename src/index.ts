@@ -1,2 +1,2 @@
 // index.ts
-export { sum } from "./sum";
+export { default as HttpRequest } from "./request";

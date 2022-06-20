@@ -4,6 +4,7 @@ import { terser } from "rollup-plugin-terser";
 
 export default {
   input: "src/index.ts", // 入口文件
+  external: ["axios"],
   output: [
     {
       file: pkg.main, // 输出文件名称
