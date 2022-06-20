@@ -17,9 +17,10 @@ import type {
   HttpInterceptor,
   HttpRequestConfig,
   CancelRequestSource,
+  HttpRequestType,
 } from "./types";
 
-export default class HttpRequest {
+export default class HttpRequest implements HttpRequestType {
   instance: AxiosInstance;
   interceptors?: HttpInterceptor;
   showLoading?: boolean;
@@ -31,9 +32,9 @@ export default class HttpRequest {
     response?: (res?: AxiosResponse) => void;
     responseErr?: (res?: AxiosResponse) => void;
   };
-  loadingCount = 0;
-  private DEFAULT_LOADING = true;
-  private DEFAULT_MESSAGE = true;
+  private LOADING_COUNT = 0;
+  private readonly DEFAULT_LOADING = true;
+  private readonly DEFAULT_MESSAGE = true;
 
   constructor(config: HttpRequestConfig) {
     this.instance = axios.create(config);
@@ -56,7 +57,7 @@ export default class HttpRequest {
     this.instance.interceptors.request.use(
       (config: HttpRequestConfig) => {
         if (config.showLoading ?? this.showLoading) {
-          this.loadingCount++;
+          this.LOADING_COUNT++;
           this.handleCallback?.loadingStart?.();
         }
         return config;
@@ -100,7 +101,7 @@ export default class HttpRequest {
           }
           if (
             (config.showLoading ?? this.showLoading) &&
-            --this.loadingCount === 0
+            --this.LOADING_COUNT === 0
           ) {
             this.handleCallback?.loadingEnd?.();
           }
@@ -113,7 +114,7 @@ export default class HttpRequest {
           }
           if (
             (config.showLoading ?? this.showLoading) &&
-            --this.loadingCount === 0
+            --this.LOADING_COUNT === 0
           ) {
             this.handleCallback?.loadingEnd?.();
           }
@@ -124,6 +125,25 @@ export default class HttpRequest {
           url && this.deleteUrl(url);
         });
     });
+  }
+  get<T>(config: HttpRequestConfig<T>) {
+    return this.request<T>({ ...config, method: "GET" });
+  }
+
+  post<T>(config: HttpRequestConfig<T>) {
+    return this.request<T>({ ...config, method: "POST" });
+  }
+
+  put<T>(config: HttpRequestConfig<T>) {
+    return this.request<T>({ ...config, method: "PUT" });
+  }
+
+  patch<T>(config: HttpRequestConfig<T>) {
+    return this.request<T>({ ...config, method: "PATCH" });
+  }
+
+  delete<T>(config: HttpRequestConfig<T>) {
+    return this.request<T>({ ...config, method: "DELETE" });
   }
   private getRequestIndex(url: string) {
     return this.cancleRequests?.findIndex(

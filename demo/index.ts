@@ -1,4 +1,4 @@
-import { HttpRequest } from "../dist/heng-request.esm";
+import { HttpRequest } from "../dist/types";
 
 const httpRequest = new HttpRequest({
   baseURL: "https://saberblog.topzhang.cn/",

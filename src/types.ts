@@ -67,3 +67,22 @@ export interface CancelRequestSource {
    */
   [index: string]: () => void;
 }
+
+export interface HttpRequestType extends HttpRequestConfig {
+  /**
+   *
+   * @param config 请求配置项
+   * @description 请求函数
+   */
+  request<T>(config: HttpRequestConfig<T>): Promise<T>;
+  /**
+   * @description 取消所有请求
+   */
+  cancelAllRequest(): void;
+  /**
+   *
+   * @param url 传递一个字符串或者数组
+   * @description 取消请求函数
+   */
+  cancelRequest(url: string | string[]): void;
+}

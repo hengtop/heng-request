@@ -8,6 +8,32 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
 
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
 /*
    封装一个通用的axios
    实现功能
@@ -23,7 +49,7 @@ var HttpRequest = /** @class */ (function () {
     function HttpRequest(config) {
         var _this = this;
         var _a, _b, _c, _d, _e, _f;
-        this.loadingCount = 0;
+        this.LOADING_COUNT = 0;
         this.DEFAULT_LOADING = true;
         this.DEFAULT_MESSAGE = true;
         this.instance = axios__default["default"].create(config);
@@ -40,7 +66,7 @@ var HttpRequest = /** @class */ (function () {
         this.instance.interceptors.request.use(function (config) {
             var _a, _b, _c;
             if ((_a = config.showLoading) !== null && _a !== void 0 ? _a : _this.showLoading) {
-                _this.loadingCount++;
+                _this.LOADING_COUNT++;
                 (_c = (_b = _this.handleCallback) === null || _b === void 0 ? void 0 : _b.loadingStart) === null || _c === void 0 ? void 0 : _c.call(_b);
             }
             return config;
@@ -81,7 +107,7 @@ var HttpRequest = /** @class */ (function () {
                     (_d = (_c = _this.handleCallback) === null || _c === void 0 ? void 0 : _c.response) === null || _d === void 0 ? void 0 : _d.call(_c);
                 }
                 if (((_e = config.showLoading) !== null && _e !== void 0 ? _e : _this.showLoading) &&
-                    --_this.loadingCount === 0) {
+                    --_this.LOADING_COUNT === 0) {
                     (_g = (_f = _this.handleCallback) === null || _f === void 0 ? void 0 : _f.loadingEnd) === null || _g === void 0 ? void 0 : _g.call(_f);
                 }
                 resolve(res);
@@ -92,7 +118,7 @@ var HttpRequest = /** @class */ (function () {
                     (_c = (_b = _this.handleCallback) === null || _b === void 0 ? void 0 : _b.responseErr) === null || _c === void 0 ? void 0 : _c.call(_b, err);
                 }
                 if (((_d = config.showLoading) !== null && _d !== void 0 ? _d : _this.showLoading) &&
-                    --_this.loadingCount === 0) {
+                    --_this.LOADING_COUNT === 0) {
                     (_f = (_e = _this.handleCallback) === null || _e === void 0 ? void 0 : _e.loadingEnd) === null || _f === void 0 ? void 0 : _f.call(_e);
                 }
                 reject(err);
@@ -101,6 +127,21 @@ var HttpRequest = /** @class */ (function () {
                 url && _this.deleteUrl(url);
             });
         });
+    };
+    HttpRequest.prototype.get = function (config) {
+        return this.request(__assign(__assign({}, config), { method: "GET" }));
+    };
+    HttpRequest.prototype.post = function (config) {
+        return this.request(__assign(__assign({}, config), { method: "POST" }));
+    };
+    HttpRequest.prototype.put = function (config) {
+        return this.request(__assign(__assign({}, config), { method: "PUT" }));
+    };
+    HttpRequest.prototype.patch = function (config) {
+        return this.request(__assign(__assign({}, config), { method: "PATCH" }));
+    };
+    HttpRequest.prototype.delete = function (config) {
+        return this.request(__assign(__assign({}, config), { method: "DELETE" }));
     };
     HttpRequest.prototype.getRequestIndex = function (url) {
         var _a;

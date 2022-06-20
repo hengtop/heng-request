@@ -1,6 +1,8 @@
-import typescript from "rollup-plugin-typescript2";
+import resolve from "rollup-plugin-node-resolve"; // 依赖引用插件
+import { eslint } from "rollup-plugin-eslint"; // eslint插件
 import pkg from "./package.json";
 import { terser } from "rollup-plugin-terser";
+import typescript from "rollup-plugin-typescript2";
 
 export default {
   input: "src/index.ts", // 入口文件
@@ -25,6 +27,12 @@ export default {
     },
   ],
   plugins: [
+    resolve(["ts", "tsx", "js"]),
+    eslint({
+      throwOnError: true,
+      include: ["src/**/*.ts"],
+      exclude: ["node_modules/**", "dist/**", "demo", "rollup.config.js"],
+    }),
     typescript({
       tsconfigOverride: {
         compilerOptions: {

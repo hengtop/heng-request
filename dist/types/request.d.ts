@@ -1,6 +1,6 @@
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import type { HttpInterceptor, HttpRequestConfig, CancelRequestSource } from "./types";
-export default class HttpRequest {
+import type { HttpInterceptor, HttpRequestConfig, CancelRequestSource, HttpRequestType } from "./types";
+export default class HttpRequest implements HttpRequestType {
     instance: AxiosInstance;
     interceptors?: HttpInterceptor;
     showLoading?: boolean;
@@ -12,11 +12,16 @@ export default class HttpRequest {
         response?: (res?: AxiosResponse) => void;
         responseErr?: (res?: AxiosResponse) => void;
     };
-    loadingCount: number;
-    private DEFAULT_LOADING;
-    private DEFAULT_MESSAGE;
+    private LOADING_COUNT;
+    private readonly DEFAULT_LOADING;
+    private readonly DEFAULT_MESSAGE;
     constructor(config: HttpRequestConfig);
     request<T>(config: HttpRequestConfig<T>): Promise<T>;
+    get<T>(config: HttpRequestConfig<T>): Promise<T>;
+    post<T>(config: HttpRequestConfig<T>): Promise<T>;
+    put<T>(config: HttpRequestConfig<T>): Promise<T>;
+    patch<T>(config: HttpRequestConfig<T>): Promise<T>;
+    delete<T>(config: HttpRequestConfig<T>): Promise<T>;
     private getRequestIndex;
     private deleteUrl;
     cancelAllRequest(): void;

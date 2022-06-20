@@ -6,7 +6,7 @@
   "module": "dist/heng-request.esm.js",
   "types": "dist/types",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rm -rf dist && rollup -c",
     "dev": "jest --watch",
     "test": "jest --coverage"
   },
@@ -35,6 +35,10 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "axios": "^0.27.2"
+    "@typescript-eslint/parser": "^5.28.0",
+    "axios": "^0.27.2",
+    "heng-request": "^2.0.0",
+    "rollup-plugin-eslint": "^7.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
   }
 }
