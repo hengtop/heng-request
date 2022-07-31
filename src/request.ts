@@ -56,8 +56,10 @@ export default class HttpRequest implements HttpRequestType {
     //配置所有实例使用的拦截器
     this.instance.interceptors.request.use(
       (config: HttpRequestConfig) => {
-        if (config.showLoading ?? this.showLoading) {
-          this.LOADING_COUNT++;
+        if (
+          (config.showLoading ?? this.showLoading) &&
+          this.LOADING_COUNT++ === 0
+        ) {
           this.handleCallback?.loadingStart?.();
         }
         return config;
