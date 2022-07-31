@@ -65,8 +65,8 @@ var HttpRequest = /** @class */ (function () {
         //配置所有实例使用的拦截器
         this.instance.interceptors.request.use(function (config) {
             var _a, _b, _c;
-            if ((_a = config.showLoading) !== null && _a !== void 0 ? _a : _this.showLoading) {
-                _this.LOADING_COUNT++;
+            if (((_a = config.showLoading) !== null && _a !== void 0 ? _a : _this.showLoading) &&
+                _this.LOADING_COUNT++ === 0) {
                 (_c = (_b = _this.handleCallback) === null || _b === void 0 ? void 0 : _b.loadingStart) === null || _c === void 0 ? void 0 : _c.call(_b);
             }
             return config;
